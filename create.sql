@@ -1,17 +1,14 @@
--- Создание таблиц для enum
 CREATE TYPE loan_type AS ENUM ('standard', 'special_conditions');
 CREATE TYPE loan_status AS ENUM ('active', 'closed', 'defaulted');
 CREATE TYPE insurance_type AS ENUM ('car', 'life', 'car_life');
 CREATE TYPE document_status AS ENUM ('received', 'in_processing', 'accepted', 'rejected');
 CREATE TYPE type_document AS ENUM ('statement', 'passport', 'driver_icense', '2_NDFL', 'work_certificate', 'copy_work_books', 'car_passport', 'car_registration', 'other');
 
--- Таблица Company
 CREATE TABLE Company (
     id SERIAL PRIMARY KEY,
     name VARCHAR NOT NULL
 );
 
--- Таблица ModelCars
 CREATE TABLE ModelCars (
     id SERIAL PRIMARY KEY,
     company_id INT NOT NULL REFERENCES Company(id),
@@ -19,7 +16,6 @@ CREATE TABLE ModelCars (
     sale BOOLEAN NOT NULL
 );
 
--- Таблица Dealers
 CREATE TABLE Dealers (
     id SERIAL PRIMARY KEY,
     name VARCHAR NOT NULL,
@@ -27,7 +23,6 @@ CREATE TABLE Dealers (
     sale BOOLEAN NOT NULL
 );
 
--- Таблица Cars
 CREATE TABLE Cars (
     id SERIAL PRIMARY KEY,
     model_id INT NOT NULL REFERENCES ModelCars(id),
@@ -36,13 +31,11 @@ CREATE TABLE Cars (
     dealer_id INT NOT NULL REFERENCES Dealers(id)
 );
 
--- Таблица BlackLists
 CREATE TABLE BlackLists (
     id SERIAL PRIMARY KEY,
     reason TEXT NOT NULL
 );
 
--- Таблица People
 CREATE TABLE People (
     id SERIAL PRIMARY KEY,
     name VARCHAR NOT NULL,
@@ -53,14 +46,12 @@ CREATE TABLE People (
     black_list_id INT REFERENCES BlackLists(id)
 );
 
--- Таблица Borrowers
 CREATE TABLE Borrowers (
     id SERIAL PRIMARY KEY,
     people_id INT NOT NULL REFERENCES People(id),
     spouse_id INT REFERENCES People(id)
 );
 
--- Таблица Documents
 CREATE TABLE Documents (
     id SERIAL PRIMARY KEY,
     people_id INT NOT NULL REFERENCES People(id),
@@ -70,7 +61,6 @@ CREATE TABLE Documents (
     document_status document_status NOT NULL
 );
 
--- Таблица Insurances
 CREATE TABLE Insurances (
     id SERIAL PRIMARY KEY,
     insurance_type insurance_type NOT NULL,
@@ -79,7 +69,6 @@ CREATE TABLE Insurances (
     sale BOOLEAN NOT NULL
 );
 
--- Таблица LoanConditions
 CREATE TABLE LoanConditions (
     id SERIAL PRIMARY KEY,
     total_loan_amount NUMERIC,
@@ -89,14 +78,12 @@ CREATE TABLE LoanConditions (
     monthly_payment NUMERIC,
     loan_term INT NOT NULL);
 
--- Таблица RepaymentSchedules
 CREATE TABLE RepaymentSchedules (
     id SERIAL PRIMARY KEY,
     date DATE NOT NULL,
     remaining_balance NUMERIC
 );
 
--- Таблица Payments
 CREATE TABLE Payments (
     id SERIAL PRIMARY KEY,
     date DATE NOT NULL,
@@ -104,7 +91,6 @@ CREATE TABLE Payments (
     repayment_shedules_id INT NOT NULL REFERENCES RepaymentSchedules(id)
 );
 
--- Таблица Treaty
 CREATE TABLE Treaty (
     id SERIAL PRIMARY KEY,
     borrower_id INT NOT NULL REFERENCES Borrowers(id),

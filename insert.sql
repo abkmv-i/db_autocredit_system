@@ -1,4 +1,3 @@
--- Удаляем все данные из таблиц (если нужно)
 DELETE FROM Payments;
 DELETE FROM RepaymentSchedules;
 DELETE FROM Documents;
@@ -12,12 +11,9 @@ DELETE FROM BlackLists;
 DELETE FROM Company;
 DELETE FROM LoanConditions;
 
--- Вставляем данные в таблицы
 
--- 1. Вставка черных списков
 INSERT INTO BlackLists (reason) VALUES ('Previous default on loan');
 
--- 2. Вставка компаний
 INSERT INTO Company (name) VALUES
 ('Toyota'),
 ('Ford'),
@@ -30,13 +26,11 @@ INSERT INTO Company (name) VALUES
 ('Kia'),
 ('Hyundai');
 
--- 3. Вставка дилеров
 INSERT INTO Dealers (name, special_conditions, sale) VALUES
 ('Dealer A', 'Special financing options available', true),
 ('Dealer B', 'None', false),
 ('Dealer C', 'Low down payment', true);
 
--- 4. Вставка моделей автомобилей
 INSERT INTO ModelCars (company_id, name, sale) VALUES
 (1, 'Camry', true),
 (1, 'Corolla', true),
@@ -49,7 +43,6 @@ INSERT INTO ModelCars (company_id, name, sale) VALUES
 (4, 'Maxima', false),
 (5, 'X5', true);
 
--- 5. Вставка автомобилей
 INSERT INTO Cars (model_id, year, cost, dealer_id) VALUES
 (1, 2020, 30000, 1),
 (2, 2021, 25000, 1),
@@ -62,7 +55,6 @@ INSERT INTO Cars (model_id, year, cost, dealer_id) VALUES
 (1, 2023, 45000, 1),
 (3, 2020, 32000, 2);
 
--- 6. Вставка страховок
 INSERT INTO Insurances (insurance_type, cost, expiration_date, sale) VALUES
 ('car', 1000, '2025-01-01', true),
 ('life', 2000, '2025-01-01', false),
@@ -76,7 +68,6 @@ INSERT INTO Insurances (insurance_type, cost, expiration_date, sale) VALUES
 ('life', 2100, '2025-08-01', false);
 
 
--- 7. Вставка условий кредита
 INSERT INTO LoanConditions (currency, down_payment, loan_term) VALUES
 ('RUB', 5000, 60),
 ('USD', 3000, 36),
@@ -89,7 +80,6 @@ INSERT INTO LoanConditions (currency, down_payment, loan_term) VALUES
 ('RUB', 9000, 96),
 ('RUB', 3500, 60);
 
--- 8. Вставка людей
 INSERT INTO People (name, surname, patronymic, contact_info, income, black_list_id) VALUES
 ('John', 'Doe', 'Smith', 'john.doe@example.com', 50000, NULL),
 ('Jane', 'Doe', 'Johnson', 'jane.doe@example.com', 60000, 1),
@@ -102,7 +92,6 @@ INSERT INTO People (name, surname, patronymic, contact_info, income, black_list_
 ('David', 'Martin', 'Thompson', 'david.martin@example.com', 70000, NULL),
 ('Sarah', 'Lee', 'Martinez', 'sarah.lee@example.com', 65000, NULL);
 
--- 9. Вставка заемщиков
 INSERT INTO Borrowers (people_id, spouse_id) VALUES
 (1, NULL),
 (2, NULL),
@@ -115,7 +104,6 @@ INSERT INTO Borrowers (people_id, spouse_id) VALUES
 (9, NULL),
 (10, 2);
 
--- 10. Вставка графиков платежей
 INSERT INTO RepaymentSchedules (date) VALUES
 ('2024-10-10'),
 ('2024-11-10'),
@@ -128,7 +116,6 @@ INSERT INTO RepaymentSchedules (date) VALUES
 ('2025-06-10'),
 ('2025-07-10');
 
--- 11. Вставка платежей
 INSERT INTO Payments (date, amount, repayment_shedules_id) VALUES
 ('2024-10-10', 500, 1),
 ('2024-11-10', 500, 2),
@@ -142,18 +129,17 @@ INSERT INTO Payments (date, amount, repayment_shedules_id) VALUES
 ('2025-07-10', 500, 10);
 
 INSERT INTO Treaty (borrower_id, guarantor_id, loan_conditional_id, car_id, insurance_id, status, repayment_shedules_id) VALUES
-(1, 2, 1, 1, 1, TRUE, 1),    -- Запись 1
-(2, 3, 2, 2, 2, TRUE, 2),    -- Запись 2
-(3, 1, 3, 3, 3, FALSE, 3),   -- Запись 3
-(4, 5, 4, 4, 4, TRUE, 1),    -- Запись 4
-(5, 6, 5, 5, 5, FALSE, 2),   -- Запись 5
-(6, 1, 6, 6, 6, TRUE, 3),    -- Запись 6
-(7, 4, 7, 7, 7, TRUE, 1),    -- Запись 7
-(2, 5, 8, 8, 8, FALSE, 2),   -- Запись 8
-(3, 1, 9, 9, 9, TRUE, 3),    -- Запись 9
-(1, 4, 10, 10, 10, FALSE, 1); -- Запись 10
+(1, 2, 1, 1, 1, TRUE, 1),
+(2, 3, 2, 2, 2, TRUE, 2),
+(3, 1, 3, 3, 3, FALSE, 3),
+(4, 5, 4, 4, 4, TRUE, 1),
+(5, 6, 5, 5, 5, FALSE, 2),
+(6, 1, 6, 6, 6, TRUE, 3),
+(7, 4, 7, 7, 7, TRUE, 1),
+(2, 5, 8, 8, 8, FALSE, 2),
+(3, 1, 9, 9, 9, TRUE, 3),
+(1, 4, 10, 10, 10, FALSE, 1);
 
--- 12. Вставка документов
 INSERT INTO Documents (people_id, file_path, file_name, document_type, document_status) VALUES
 (1, '/files/john_doe_passport.pdf', 'passport.pdf', 'passport', 'accepted'),
 (2, '/files/jane_doe_statement.pdf', 'statement.pdf', 'statement', 'received'),
@@ -164,5 +150,3 @@ INSERT INTO Documents (people_id, file_path, file_name, document_type, document_
 (3, '/files/daniel_thomas_car_registration.pdf', 'car_registration.pdf', 'car_registration', 'accepted'),
 (4, '/files/laura_white_income_certificate.pdf', 'copy_work_books.pdf', 'copy_work_books', 'accepted'),
 (1, '/files/david_martin_income_certificate.pdf', 'copy_work_books.pdf', 'copy_work_books', 'received');
-
-
